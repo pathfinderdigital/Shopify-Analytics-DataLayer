@@ -1,4 +1,9 @@
 // DATASLAYER
+// Instructions
+// 1. Update the GTM ID a few lines down.
+// 2. Remember to use the page_location and page_title DL properties on all GA4 tags.
+
+
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 
@@ -7,7 +12,7 @@ function gtag(){dataLayer.push(arguments);}
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-xxxxxx')
+})(window,document,'script','dataLayer','GTM-xxxxxxx')
 
 //Google Consent Mode v2
 gtag('consent', 'update', {
@@ -22,6 +27,7 @@ gtag('consent', 'update', {
 // Eg: https://community.shopify.com/c/technical-q-a/google-tag-manager-and-the-shopify-sandbox/m-p/2215483
 
 analytics.subscribe('page_viewed', (event) => {
+  console.log('page_view', event.context);
   window.dataLayer.push({
     'event': 'page_view',
     'page_location': event.context.window.location.href,
@@ -32,10 +38,13 @@ analytics.subscribe('page_viewed', (event) => {
 // PRODUCT VIEWED ---------------------------------------------------------
 
 analytics.subscribe('product_viewed', (event) => {
+  console.log('view_item', event.context);
   const productVariant = event.data.productVariant;
   dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
   window.dataLayer.push({
     event: "view_item",
+    page_location: event.context.window.location.href,
+    page_title: event.context.document.title,
     ecommerce: {
       currency: productVariant.price.currencyCode,
       value: productVariant.price.amount,
@@ -67,10 +76,13 @@ analytics.subscribe('product_viewed', (event) => {
 
 // ADD TO CART ----------------------------------------------------------
 analytics.subscribe('product_added_to_cart', (event) => {
+  console.log('add_to_cart', event.context);
   const cartLine = event.data.cartLine;
   dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
   window.dataLayer.push({
     event: "add_to_cart",
+    page_location: event.context.window.location.href,
+    page_title: event.context.document.title,
     ecommerce: {
       currency: cartLine.cost.totalAmount.currencyCode,
       value: cartLine.cost.totalAmount.amount,
@@ -125,6 +137,8 @@ analytics.subscribe('cart_viewed', (event) => {
   dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
   window.dataLayer.push({
     event: "view_cart",
+    page_location: event.context.window.location.href,
+    page_title: event.context.document.title,
     ecommerce: {
       currency: cartData.cost.totalAmount.currencyCode,
       value: cartData.cost.totalAmount.amount,
@@ -171,6 +185,8 @@ analytics.subscribe('checkout_started', (event) => {
   dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
   window.dataLayer.push({
     event: "begin_checkout",
+    page_location: event.context.window.location.href,
+    page_title: event.context.document.title,
     ecommerce: {
       currency: checkout.currencyCode,
       value: checkout.totalPrice.amount,
@@ -216,6 +232,8 @@ analytics.subscribe('payment_info_submitted', (event) => {
   // dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
   window.dataLayer.push({
     event: "add_payment_info",
+    page_location: event.context.window.location.href,
+    page_title: event.context.document.title,
     ecommerce: {
       currency: checkout.currencyCode,
       value: checkout.totalPrice.amount,
@@ -308,6 +326,8 @@ analytics.subscribe('checkout_completed', (event) => {
   // dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
   window.dataLayer.push({
     event: "purchase",
+    page_location: event.context.window.location.href,
+    page_title: event.context.document.title,
     user: {
       phone_number: checkout.phone,
       email: checkout.email
