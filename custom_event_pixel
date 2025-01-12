@@ -35,6 +35,21 @@ analytics.subscribe('page_viewed', (event) => {
   });
 });
 
+// COLLECTION VIEWED ---------------------------------------------------------
+
+analytics.subscribe("collection_viewed", (event) => {
+  console.log('collection_viewed', event.context);
+  window.dataLayer.push({
+    event: "collection_viewed",
+//    timestamp: event.timestamp,
+//    id: event.id,
+//    client_id: event.clientId,
+//    url: event.context.document.location.href,
+    collection_id: event.data?.collection?.id,
+    collection_title: event.data?.collection?.title,
+  });
+});
+
 // PRODUCT VIEWED ---------------------------------------------------------
 
 analytics.subscribe('product_viewed', (event) => {
