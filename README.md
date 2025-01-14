@@ -1,3 +1,5 @@
+## Shopify Events to DataLayer Script
+
 This script translates Shopify events into dataLayer events (and add relevant dataLayer properties).
 
 Shopify standard events can be found here: https://shopify.dev/docs/api/web-pixels-api/standard-events
